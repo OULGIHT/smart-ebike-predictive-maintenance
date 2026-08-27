@@ -1,4 +1,4 @@
-services:
+﻿services:
 
   kafka:
     image: apache/kafka:4.1.1
@@ -34,6 +34,20 @@ services:
 
     volumes:
       - kafka_data:/var/lib/kafka/data
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/opt/kafka/bin/kafka-topics.sh",
+          "--bootstrap-server",
+          "localhost:9092",
+          "--list"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
 volumes:
   kafka_data:
