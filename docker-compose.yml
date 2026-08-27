@@ -141,8 +141,40 @@
 
     restart: unless-stopped
 
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: ebike-sentinel-api:v4.2
+    container_name: ebike-sentinel-dashboard
+
+    command:
+      - streamlit
+      - run
+      - dashboard/app_V42.py
+      - --server.address=0.0.0.0
+      - --server.port=8501
+
+    env_file:
+      - .env
+
+    environment:
+      API_HOST: api
+      API_PORT: 8000
+
+    ports:
+      - "8501:8501"
+
+    depends_on:
+      - api
+
+    restart: unless-stopped
+
 volumes:
   kafka_data:
+
 
 
 
