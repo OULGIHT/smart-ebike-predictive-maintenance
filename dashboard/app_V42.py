@@ -1,4 +1,4 @@
-import requests
+﻿import requests
 import streamlit as st
 
 from pages_V42.fleet_overview import (
@@ -26,8 +26,8 @@ API_URL = "http://127.0.0.1:8000"
 
 
 st.set_page_config(
-    page_title="Smart E-Bike Platform",
-    page_icon="⚡",
+    page_title="E-Bike Sentinel",
+    page_icon="E",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -86,7 +86,7 @@ except Exception:
 with st.sidebar:
 
     st.title(
-        "⚡ Smart E-Bike"
+        "E-Bike Sentinel"
     )
 
     st.caption(
@@ -98,13 +98,13 @@ with st.sidebar:
     if api_online:
 
         st.success(
-            "● API ONLINE"
+            "API ONLINE"
         )
 
     else:
 
         st.warning(
-            "● API OFFLINE"
+            "API OFFLINE"
         )
 
     st.divider()
@@ -155,7 +155,7 @@ with st.sidebar:
 if not api_online:
 
     st.title(
-        "⚡ Smart E-Bike Platform"
+        "E-Bike Sentinel"
     )
 
     st.warning(
