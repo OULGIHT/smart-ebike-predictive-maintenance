@@ -114,8 +114,36 @@
 
     restart: unless-stopped
 
+
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: ebike-sentinel-api:v4.2
+    container_name: ebike-sentinel-producer
+
+    command:
+      - python
+      - -m
+      - producer.live_telemetry_producer_V42
+
+    env_file:
+      - .env
+
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_TOPIC: bike_telemetry
+
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+    restart: unless-stopped
+
 volumes:
   kafka_data:
+
 
 
 
