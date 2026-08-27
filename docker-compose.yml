@@ -80,8 +80,43 @@
     restart: unless-stopped
 
 
+
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: ebike-sentinel-api:v4.2
+    container_name: ebike-sentinel-consumer
+
+    command:
+      - python
+      - -m
+      - consumer.telemetry_consumer_V42
+
+    env_file:
+      - .env
+
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_TOPIC: bike_telemetry
+      POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ebike_db
+      POSTGRES_USER: postgres
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+    restart: unless-stopped
+
 volumes:
   kafka_data:
+
 
 
 
