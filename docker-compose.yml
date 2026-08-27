@@ -77,8 +77,20 @@
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; r=requests.get('http://127.0.0.1:8000/health', timeout=5); raise SystemExit(0 if r.status_code == 200 else 1)"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
+    restart: unless-stopped
 
 
   consumer:
@@ -168,15 +180,11 @@
       - "8501:8501"
 
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
     restart: unless-stopped
 
+
 volumes:
   kafka_data:
-
-
-
-
-
-
