@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Query
+﻿from fastapi import FastAPI, HTTPException, Query
 from sqlalchemy import text
 
 from database.db import engine
@@ -18,12 +18,29 @@ app = FastAPI(
 @app.get("/health")
 def health():
 
-    return {
-        "status": "ok",
-        "service": "smart-ebike-api",
-        "version": "V4.2",
-    }
+    try:
+        with engine.connect() as connection:
+            connection.execute(
+                text("SELECT 1")
+            )
 
+        return {
+            "status": "healthy",
+            "service": "ebike-sentinel-api",
+            "version": "V4.2",
+            "database": "connected",
+        }
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "status": "unhealthy",
+                "service": "ebike-sentinel-api",
+                "version": "V4.2",
+                "database": "unavailable",
+            },
+        ) from exc
 
 # ============================================================
 # FLEET SNAPSHOT
@@ -552,3 +569,4 @@ def fleet_summary():
         "prediction_horizon_days":
             30,
     }
+
