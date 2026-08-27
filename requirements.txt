@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+python-dotenv
+pandas
+numpy
+scikit-learn
+joblib
+kafka-python
+pytest
+httpx
+streamlit
+plotly
+requests
+streamlit-autorefresh
