@@ -1,9 +1,11 @@
-import json
+﻿import json
+import os
 from collections import defaultdict
 from datetime import datetime
 
 from kafka import KafkaConsumer
 from sqlalchemy import text
+from dotenv import load_dotenv
 
 from database.db import engine
 from services.prediction_service_V42 import predict_and_save
@@ -13,11 +15,22 @@ from services.prediction_service_V42 import predict_and_save
 # CONFIGURATION
 # ============================================================
 
-KAFKA_BOOTSTRAP_SERVERS = "localhost:9092"
+load_dotenv()
 
-TOPIC_NAME = "bike_telemetry"
+KAFKA_BOOTSTRAP_SERVERS = os.getenv(
+    "KAFKA_BOOTSTRAP_SERVERS",
+    "localhost:9092"
+)
 
-CONSUMER_GROUP = "smart-ebike-postgres-v42-live-v2"
+TOPIC_NAME = os.getenv(
+    "KAFKA_TOPIC",
+    "bike_telemetry"
+)
+
+CONSUMER_GROUP = os.getenv(
+    "KAFKA_CONSUMER_GROUP",
+    "smart-ebike-postgres-v42-live-v2"
+)
 
 COMMIT_EVERY_N_MESSAGES = 100
 
@@ -28,15 +41,15 @@ COMMIT_EVERY_N_MESSAGES = 100
 
 PREDICTION_EVERY_N_EVENTS = 10
 
-# Compteur indépendant pour chaque vélo.
+# Compteur indÃ©pendant pour chaque vÃ©lo.
 #
 # Exemple :
-# DTB0001 -> 7 événements
-# DTB0002 -> 3 événements
-# DTB0003 -> 9 événements
+# DTB0001 -> 7 Ã©vÃ©nements
+# DTB0002 -> 3 Ã©vÃ©nements
+# DTB0003 -> 9 Ã©vÃ©nements
 #
-# Lorsqu'un vélo atteint 10 nouveaux événements,
-# une nouvelle prédiction est calculée.
+# Lorsqu'un vÃ©lo atteint 10 nouveaux Ã©vÃ©nements,
+# une nouvelle prÃ©diction est calculÃ©e.
 
 bike_event_counters = defaultdict(int)
 
@@ -283,9 +296,9 @@ def save_event(event):
         # INSERT TELEMETRY
         #
         # RETURNING telemetry_id permet de savoir si
-        # PostgreSQL a réellement inséré la ligne.
+        # PostgreSQL a rÃ©ellement insÃ©rÃ© la ligne.
         #
-        # Si bike_id + timestamp existe déjà :
+        # Si bike_id + timestamp existe dÃ©jÃ  :
         #
         # telemetry_id = None
         # ----------------------------------------------------
@@ -340,7 +353,7 @@ def process_automatic_prediction(
         return
 
     # --------------------------------------------------------
-    # Le vélo vient d'atteindre le seuil.
+    # Le vÃ©lo vient d'atteindre le seuil.
     # --------------------------------------------------------
 
     try:
@@ -396,7 +409,7 @@ def process_automatic_prediction(
         print()
 
         # ----------------------------------------------------
-        # La prédiction a réussi.
+        # La prÃ©diction a rÃ©ussi.
         # On recommence un nouveau cycle de 10 observations.
         # ----------------------------------------------------
 
@@ -426,9 +439,9 @@ def process_automatic_prediction(
 
         # IMPORTANT :
         #
-        # On remet également le compteur à zéro ici.
-        # Sinon chaque événement suivant déclencherait
-        # immédiatement une nouvelle tentative.
+        # On remet Ã©galement le compteur Ã  zÃ©ro ici.
+        # Sinon chaque Ã©vÃ©nement suivant dÃ©clencherait
+        # immÃ©diatement une nouvelle tentative.
 
         bike_event_counters[
             bike_id
@@ -621,8 +634,8 @@ def consume():
                 # ------------------------------------------------
                 # KAFKA OFFSET
                 #
-                # Commit seulement après traitement correct
-                # de l'événement.
+                # Commit seulement aprÃ¨s traitement correct
+                # de l'Ã©vÃ©nement.
                 # ------------------------------------------------
 
                 messages_since_commit += 1
@@ -673,7 +686,7 @@ def consume():
                 # IMPORTANT
                 #
                 # On ne commit pas l'offset Kafka lorsque
-                # le traitement principal échoue.
+                # le traitement principal Ã©choue.
                 # ------------------------------------------------
 
                 raise
@@ -754,3 +767,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
