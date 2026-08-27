@@ -1,5 +1,7 @@
-﻿import requests
+﻿import os
+import requests
 import streamlit as st
+from dotenv import load_dotenv
 
 from pages_V42.fleet_overview import (
     render_fleet_overview,
@@ -22,7 +24,19 @@ from pages_V42.system_architecture import (
 # CONFIGURATION
 # ============================================================
 
-API_URL = "http://127.0.0.1:8000"
+load_dotenv()
+
+API_HOST = os.getenv(
+    "API_HOST",
+    "127.0.0.1"
+)
+
+API_PORT = os.getenv(
+    "API_PORT",
+    "8000"
+)
+
+API_URL = f"http://{API_HOST}:{API_PORT}"
 
 
 st.set_page_config(
@@ -229,3 +243,4 @@ def render_live_page():
 # ============================================================
 
 render_live_page()
+
