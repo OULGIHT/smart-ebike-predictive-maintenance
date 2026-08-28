@@ -14,6 +14,7 @@ def test_health_endpoint():
 
     data = response.json()
 
-    assert data["status"] == "ok"
-    assert data["service"] == "smart-ebike-api"
+    assert data["status"] == "healthy"
+    assert data["service"] == "ebike-sentinel-api"
     assert data["version"] == "V4.2"
+    assert data["database"] == "connected"
