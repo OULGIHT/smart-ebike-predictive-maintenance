@@ -451,7 +451,7 @@ def render_fleet_overview(api_get):
 
             st.plotly_chart(
                 fig,
-                use_container_width=True,
+                width="stretch",
             )
 
         else:
@@ -475,7 +475,7 @@ def render_fleet_overview(api_get):
 
         st.dataframe(
             fleet_df,
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
             height=390,
         )

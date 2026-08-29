@@ -351,7 +351,7 @@ def render_bike_intelligence(api_get):
 
     st.plotly_chart(
         fig_battery,
-        use_container_width=True,
+        width="stretch",
     )
 
 
@@ -397,7 +397,7 @@ def render_bike_intelligence(api_get):
 
         st.plotly_chart(
             fig_soc,
-            use_container_width=True,
+            width="stretch",
         )
 
 
@@ -439,7 +439,7 @@ def render_bike_intelligence(api_get):
 
         st.plotly_chart(
             fig_consumption,
-            use_container_width=True,
+            width="stretch",
         )
 
 
@@ -528,7 +528,7 @@ def render_bike_intelligence(api_get):
 
         st.plotly_chart(
             fig_signal,
-            use_container_width=True,
+            width="stretch",
         )
 
 
@@ -572,7 +572,7 @@ def render_bike_intelligence(api_get):
 
         st.dataframe(
             recent,
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 

@@ -121,7 +121,7 @@ def render_risk_monitoring(
         if st.button(
             "Run Prediction",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         ):
 
             try:
@@ -501,7 +501,7 @@ def render_risk_monitoring(
 
         st.plotly_chart(
             fig,
-            use_container_width=True,
+            width="stretch",
         )
 
     else:
@@ -589,7 +589,7 @@ def render_risk_monitoring(
 
         st.plotly_chart(
             fig_critical,
-            use_container_width=True,
+            width="stretch",
         )
 
 
@@ -664,7 +664,7 @@ def render_risk_monitoring(
         history[
             columns
         ],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 

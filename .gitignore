@@ -14,7 +14,12 @@ env/
 
 # Data
 data/raw/
-data/processed/
+
+# Ignore processed data by default
+data/processed/*
+
+# Keep the feature schema required for V4.2 inference
+!data/processed/temporal_feature_schema_V4.json
 
 # Archives
 archive/
